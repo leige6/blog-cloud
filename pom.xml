@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>blog-console</module>
+		<module>blog-basic</module>
 	</modules>
 	
 	<properties>

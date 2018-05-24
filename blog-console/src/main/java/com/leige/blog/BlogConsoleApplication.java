@@ -1,12 +1,12 @@
-package com.itmuch.cloud;
+package com.leige.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MicroserviceSimpleConsumerMovieApplication {
+public class BlogConsoleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MicroserviceSimpleConsumerMovieApplication.class, args);
+		SpringApplication.run(BlogConsoleApplication.class, args);
 	}
 }

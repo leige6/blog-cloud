@@ -1,0 +1,8 @@
+server:
+  port: 8081
+  context-path: /
+  image-maxSize: 2014000
+ueditor:
+  config-path: config.json
+logging:
+  config: classpath:logback-spring-prod.xml

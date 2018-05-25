@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leige.blog.mapper.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.leige.blog.model.SysResource">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="open_mode" jdbcType="VARCHAR" property="openMode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="pid" jdbcType="BIGINT" property="pid" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="is_opend" jdbcType="INTEGER" property="isOpend" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="creator_time" jdbcType="TIMESTAMP" property="creatorTime" />
+    <result column="update_count" jdbcType="INTEGER" property="updateCount" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sp.id, sp.name, sp.value, sp.url, sp.open_mode, sp.description, sp.icon, sp.pid, sp.type, sp.seq, sp.is_opend, sp.creator_id, sp.creator_time,
+    sp.update_count, sp.update_time, sp.update_id, sp.is_del
+  </sql>
+  <select id="selectSysResourceByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resource sp,sys_role_resource srr
+    where sp.id=srr.per_id and srr.role_id=#{rid,jdbcType=BIGINT}
+  </select>
+
+
+  <select id="selectByRoleValue" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource sp,sys_role_resource srr,sys_role sr
+    where sp.id=srr.per_id AND sr.id=srr.role_id and sr.value=#{roleValue,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource sp
+    where sp.type=#{type,jdbcType=INTEGER}
+  </select>
+</mapper>

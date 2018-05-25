@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leige.blog.mapper.SysRoleResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.leige.blog.model.SysRoleResource" >
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="per_id" property="perId" jdbcType="BIGINT" />
+  </resultMap>
+
+  <insert id="insertByBatch" parameterType="java.util.List">
+    insert into sys_role_resource (role_id, per_id)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.roleId,jdbcType=BIGINT}, #{item.perId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+  <delete id="deleteByRoleId" parameterType="java.lang.Long">
+    delete from sys_role_resource
+    where role_id = #{rid,jdbcType=BIGINT}
+  </delete>
+</mapper>

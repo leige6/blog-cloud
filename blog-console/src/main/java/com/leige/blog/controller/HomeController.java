@@ -21,10 +21,4 @@ public class HomeController {
         System.out.println("访问主页");
         return "index";
     }
-
-    @RequestMapping("/deny")
-    @ResponseBody
-    public Result deny(){
-        return ResultUtil.success(ResultEnum.USER_UNAUTHOR,null);
-    }
 }

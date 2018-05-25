@@ -1,9 +1,9 @@
 package com.leige.blog.config;
 
 import com.leige.blog.common.utils.MD5Util;
-import com.leige.blog.interceptor.CustomAccessDeniedHandler;
 import com.leige.blog.security.CustomUserService;
 import com.leige.blog.security.MyFilterSecurityInterceptor;
+import com.leige.blog.security.RestfulAccessDeniedHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 /**
@@ -32,7 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
     @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+    @Autowired
     private SessionRegistry sessionRegistry;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .failureUrl("/login?error")
                 .permitAll() //登录页面用户任意访问
-                .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and().exceptionHandling().accessDeniedPage("/deny")
                 .and()
                 .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry)
                 .and()
@@ -92,5 +96,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CustomUserService getCustomUserService(){ //注册UserDetailsService 的bean
         return new CustomUserService();
+    }
+
+    @Bean
+    AccessDeniedHandler getAccessDeniedHandler(){ //注册UserDetailsService 的bean
+        return new RestfulAccessDeniedHandlerImpl();
     }
 }

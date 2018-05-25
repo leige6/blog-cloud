@@ -1,5 +1,8 @@
 package com.leige.blog.controller;
 
+import com.leige.blog.common.enums.ResultEnum;
+import com.leige.blog.common.utils.result.Result;
+import com.leige.blog.common.utils.result.ResultUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +24,7 @@ public class HomeController {
 
     @RequestMapping("/deny")
     @ResponseBody
-    public String deny(Model model){
-        System.out.println("-------------deny---------");
-        return "deny";
+    public Result deny(){
+        return ResultUtil.success(ResultEnum.USER_UNAUTHOR,null);
     }
 }

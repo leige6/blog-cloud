@@ -3,10 +3,13 @@ package com.leige.blog.common.utils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 版本信息：v1.0 日期：2014-3-26 Copyright Mike Chen(chengang_mike@yahoo.cn) 版权所有
- * 
- */
-
+  * @Title:
+  * @Description: 获取客户端Ip地址
+  * @param
+  * @return
+  * @author 张亚磊
+  * @date 2018年05月25日 13:08:06
+  */
 public class IpHelper {
 	
 

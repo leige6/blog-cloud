@@ -1,5 +1,6 @@
 package com.leige.blog.config;
 
+import com.leige.blog.common.utils.MD5Util;
 import com.leige.blog.interceptor.CustomAccessDeniedHandler;
 import com.leige.blog.security.CustomUserService;
 import com.leige.blog.security.MyFilterSecurityInterceptor;
@@ -11,7 +12,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 /**
@@ -25,18 +28,12 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private CustomUserService customUserService;
+    @Autowired
     private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
-
-    @Bean
-    UserDetailsService customUserService(){ //注册UserDetailsService 的bean
-        return new CustomUserService();
-    }
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserService()); //user Details Service验证
-
-    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -49,13 +46,51 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll() //登录页面用户任意访问
                 .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
-                .logout().permitAll(); //注销行为任意访问
-        http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
+                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry)
+                .and()
+                .and()
+                .logout().permitAll().invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .and()
+                .httpBasic(); //注销行为任意访问
+        http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class).csrf().disable();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
         web.ignoring().antMatchers("/css/**", "/js/**","/image/**","/plugs/**","*/***/*.png","*/**/*.jpg");
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserService).passwordEncoder(new PasswordEncoder() {
+
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return MD5Util.encode((String) rawPassword);
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return encodedPassword.equals(MD5Util.encode((String) rawPassword));
+            }
+        });
+    }
+
+    @Bean
+    public SessionRegistry getSessionRegistry(){
+        SessionRegistry sessionRegistry=new SessionRegistryImpl();
+        return sessionRegistry;
+    }
+
+    @Bean
+    public MyFilterSecurityInterceptor getMyFilterSecurityInterceptor(){
+        return new MyFilterSecurityInterceptor();
+    }
+
+    @Bean
+    CustomUserService getCustomUserService(){ //注册UserDetailsService 的bean
+        return new CustomUserService();
     }
 }

@@ -13,5 +13,9 @@ public interface SysResourceMapper extends Mapper<SysResource> {
 
    public List<SysResource> selectByRoleValue(String roleValue);
 
+   public List<SysResource> selectAll();
+
+   public List<SysResource> selectByUserId(long userId);
+
    public List<SysResource> selectByType(Integer type);
 }

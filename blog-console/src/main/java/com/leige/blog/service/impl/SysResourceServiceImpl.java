@@ -38,6 +38,11 @@ public class SysResourceServiceImpl implements SysResourceService {
         return sysResourceMapper.selectByRoleValue(roleValue);
     }
 
+    @Override
+    public List<SysResource> selectByUserId(long userId) {
+        return sysResourceMapper.selectByUserId(userId);
+    }
+
     public List<SysResource> selectByType(Integer type) {
         return sysResourceMapper.selectByType(type);
     }

@@ -39,6 +39,24 @@
     where sp.id=srr.per_id AND sr.id=srr.role_id and sr.value=#{roleValue,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource  sp
+    WHERE sp.type!=0
+  </select>
+
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user_role sur
+    left JOIN sys_role sr on  sr.id=sur.role_id
+    left JOIN sys_role_resource srr on sr.id=srr.role_id
+    left JOIN sys_resource  sp on  sp.id=srr.per_id
+    WHERE sur.user_id=#{userId,jdbcType=BIGINT}
+    AND sp.type!=0
+  </select>
+
 
   <select id="selectByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select

@@ -16,6 +16,8 @@ public interface SysResourceService {
 
     List<SysResource> selectByRoleValue(String roleValue);
 
+    List<SysResource> selectByUserId(long userId);
+
     List<Tree> selectAllMenu();
 
     List<Tree> selectAllTree();

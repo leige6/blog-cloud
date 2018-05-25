@@ -8,7 +8,7 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -18,7 +18,7 @@ import java.util.*;
  * @Description:
  * @date 2018/5/25  10:57
  */
-@Service
+@Component
 public class MyInvocationSecurityMetadataSourceService implements
         FilterInvocationSecurityMetadataSource {
 

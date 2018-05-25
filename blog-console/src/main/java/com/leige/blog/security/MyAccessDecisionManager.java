@@ -6,7 +6,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -16,7 +16,7 @@ import java.util.Iterator;
  * @Description:
  * @date 2018/5/25  10:54
  */
-@Service
+@Component
 public class MyAccessDecisionManager implements AccessDecisionManager {
         // decide 方法是判定是否拥有权限的决策方法，
         //authentication 是释CustomUserService中循环添加到 GrantedAuthority 对象中的权限信息集合.

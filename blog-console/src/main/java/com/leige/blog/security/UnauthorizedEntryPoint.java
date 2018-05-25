@@ -18,7 +18,9 @@ import java.io.PrintWriter;
 
 
 /**
- * Created by Administrator on 2018/5/25.
+ * @author 张亚磊
+ * @Description:
+ * @date 2018/5/24  12:28
  */
 @Component
 public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {

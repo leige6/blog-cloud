@@ -1,8 +1,13 @@
 package com.leige.blog.common.utils;
 
 /**
- * Created by yangyibo on 17/2/7.
- */
+  * @Title:
+  * @Description: MD5加密工具
+  * @param
+  * @return
+  * @author 张亚磊
+  * @date 2018年05月25日 13:07:18
+  */
 import java.security.MessageDigest;
 
 /**

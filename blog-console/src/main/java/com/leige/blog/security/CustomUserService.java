@@ -2,6 +2,7 @@ package com.leige.blog.security;
 
 import com.leige.blog.model.SysResource;
 import com.leige.blog.model.SysUser;
+import com.leige.blog.security.jwt.JwtUserFactory;
 import com.leige.blog.service.SysResourceService;
 import com.leige.blog.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class CustomUserService implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             }
-            return new User(user.getUserName(), user.getPassword(), grantedAuthorities);
+            return JwtUserFactory.create(user,grantedAuthorities);
         } else {
             throw new UsernameNotFoundException("admin: " + username + " do not exist!");
         }

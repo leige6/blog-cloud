@@ -59,7 +59,8 @@ public class SysUser extends CommonEntity implements Serializable {
     private String loginIp;
 
     private Long orgId;
-    
+
+    private Date lastPasswordResetDate;
     
     /********************扩展属性************************/
     /**角色名称*/
@@ -258,5 +259,13 @@ public class SysUser extends CommonEntity implements Serializable {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 }

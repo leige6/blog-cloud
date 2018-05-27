@@ -1,8 +1,5 @@
 package com.leige.blog.controller;
 
-import com.leige.blog.common.enums.ResultEnum;
-import com.leige.blog.common.utils.result.Result;
-import com.leige.blog.common.utils.result.ResultUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class HomeController {
-    @RequestMapping("/")
+    @RequestMapping(value={"/","/index"})
     @ResponseBody
     public String index(Model model){
         System.out.println("访问主页");

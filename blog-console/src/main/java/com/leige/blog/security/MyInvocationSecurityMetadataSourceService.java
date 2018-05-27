@@ -43,7 +43,10 @@ public class MyInvocationSecurityMetadataSourceService implements
             //用权限的getUrl() 作为map的key，用ConfigAttribute的集合作为 value，
             map.put(permission.getUrl(), array);
         }
-
+        array = new ArrayList<>();
+        cfg = new SecurityConfig("ROLE_LOGIN");
+        array.add(cfg);
+        map.put("need_login", array);
     }
 
     //此方法是为了判定用户请求的url 是否在权限表中，如果在权限表中，则返回给 decide 方法，用来判定用户是否有此权限。如果不在权限表中则放行。
@@ -61,7 +64,8 @@ public class MyInvocationSecurityMetadataSourceService implements
                 return map.get(resUrl);
             }
         }
-        return null;
+
+        return map.get("need_login");
     }
 
     @Override

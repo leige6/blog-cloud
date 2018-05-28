@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于获取token的rest api要允许匿名访问
                 // 除上面外的所有请求全部需要鉴权认证
-                .antMatchers("/**.shtml").authenticated();
+                .antMatchers("/**.shtml","/").authenticated();
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);

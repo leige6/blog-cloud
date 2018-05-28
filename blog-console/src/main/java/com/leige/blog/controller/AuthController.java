@@ -1,9 +1,12 @@
 package com.leige.blog.controller;
 
+import com.leige.blog.common.enums.ResultEnum;
+import com.leige.blog.common.utils.result.Result;
+import com.leige.blog.common.utils.result.ResultUtil;
 import com.leige.blog.model.SysUser;
-import com.leige.blog.security.jwt.JwtAuthenticationRequest;
 import com.leige.blog.security.jwt.JwtAuthenticationResponse;
 import com.leige.blog.service.AuthService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @RestController
 public class AuthController {
@@ -23,16 +27,21 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(
-            @RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException{
-        final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-        // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+    @RequestMapping(value = "/login/auth", method = {RequestMethod.POST})
+    public Result login(String username, String password) throws AuthenticationException{
+        if(StringUtils.isEmpty(username)){
+            return  ResultUtil.fail(ResultEnum.USERNAME_NOT_BLANK);
+        }
+        if(StringUtils.isEmpty(password)){
+            return  ResultUtil.fail(ResultEnum.PASSWORD_NOT_BLANK);
+        }
+        final String token = authService.login(username, password);
+        HashMap<String,Object> data=new HashMap<>();
+        data.put("token",token);
+        return  ResultUtil.success(ResultEnum.LOGIN_IN_SUCCESS,data);
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
+    @RequestMapping(value = "/login/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(
             HttpServletRequest request) throws AuthenticationException{
         String token = request.getHeader(tokenHeader);
@@ -44,7 +53,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.register}", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/register", method = RequestMethod.POST)
     public SysUser register(@RequestBody SysUser addedUser) throws AuthenticationException{
         return authService.register(addedUser);
     }

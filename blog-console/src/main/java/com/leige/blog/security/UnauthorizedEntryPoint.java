@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 
 
@@ -39,7 +38,7 @@ public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
             response.getOutputStream().write(result.getBytes("UTF-8"));
             response.getOutputStream().flush();
         }else{
-            response.sendRedirect("/login");
+            response.sendRedirect("/login.shtml");
         }
 
     }

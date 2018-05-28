@@ -1,5 +1,6 @@
 package com.leige.blog.controller;
 
+import com.leige.blog.common.enums.ResultEnum;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -25,7 +26,7 @@ public class MyblogErrorController extends BasicErrorController {
         super(new DefaultErrorAttributes(), new ErrorProperties());
     }
 
-    private static final String PATH = "/error";
+    private static final String PATH = "/error.shtml";
 
     @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -34,8 +35,14 @@ public class MyblogErrorController extends BasicErrorController {
         HttpStatus status = getStatus(request);
         body.put("state",false);
         if(404==status.value()){
-            body.put("code",status.value());
-            body.put("msg",status.getReasonPhrase());
+            body.put("code",ResultEnum.ERROR_404_AJAX.getCode());
+            body.put("msg",ResultEnum.ERROR_404_AJAX.getMsg());
+        }else if(405==status.value()){
+            body.put("code", ResultEnum.REQUEST_ERROR.getCode());
+            body.put("msg",ResultEnum.REQUEST_ERROR.getMsg());
+        }else if(500==status.value()){
+            body.put("code", ResultEnum.ERROR_500.getCode());
+            body.put("msg",ResultEnum.ERROR_500.getMsg());
         }else{
             Integer code=(Integer)request.getAttribute("code");
             String msg=(String)request.getAttribute("msg");
@@ -50,17 +57,12 @@ public class MyblogErrorController extends BasicErrorController {
     )
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = this.getStatus(request);
-        ModelAndView result=new ModelAndView("common/error");
+        ModelAndView result=null;
         if(404==status.value()){
-            result.addObject("code",status.value());
-            result.addObject("msg",status.getReasonPhrase());
+            result=new ModelAndView("forward:/404.shtml");
         }else {
-            Integer code=(Integer)request.getAttribute("code");
-            String msg=(String)request.getAttribute("msg");
-            result.addObject("code",code);
-            result.addObject("msg",msg);
+            result=new ModelAndView("forward:/500.shtml");
         }
-        result.addObject("state",false);
         return result;
     }
     @Override

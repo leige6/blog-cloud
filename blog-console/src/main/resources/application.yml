@@ -21,8 +21,8 @@ spring:
       maxOpenPreparedStatements: 20
     freemarker:
       allow-request-override: false
-      cache: true
-      check-template-location: true
+      cache: false
+      check-template-location: false
       charset: UTF-8
       content-type: text/html
       expose-request-attributes: false
@@ -40,8 +40,3 @@ jwt:
     secret: mySecret
     expiration: 604800
     tokenHead: "Bearer "
-    route:
-      authentication:
-        path: auth
-        refresh: refresh
-        register: "auth/register"

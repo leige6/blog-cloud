@@ -5,7 +5,10 @@ package com.leige.blog.common.enums;
  */
 public enum ResultEnum {
     SYS_REQUEST_SUCCESS(200,"请求成功"),
-    SYS_INNER_ERROR(500,"系统内部错误"),
+    REQUEST_ERROR(300,"请求方式不支持"),
+    ERROR_404_AJAX(404,"请求地址错误"),
+    ERROR_404_HTML(404,"请求页面不存在"),
+    ERROR_500(500,"系统内部错误"),
     NEED_LOGIN(1100,"请登录"),
     LOGIN_IN_SUCCESS(1000,"登陆成功"),
     CAPTCHA_NOT_BLANK(1001, "验证码不能为空"),

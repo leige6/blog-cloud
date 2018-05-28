@@ -3,8 +3,6 @@ package com.leige.blog.security;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,12 +33,14 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
         for(Iterator<ConfigAttribute> iter = configAttributes.iterator(); iter.hasNext(); ) {
             c = iter.next();
             needRole = c.getAttribute();
-            if ("ROLE_LOGIN".equals(needRole)) {
+            /*if ("ROLE_LOGIN".equals(needRole)) {
                 if (authentication instanceof AnonymousAuthenticationToken) {
                     throw new BadCredentialsException("未登录");
                 } else
                     return;
-            }
+            }else if("ROLE_ANONYMOUS".equals(needRole)){
+                return;
+            }*/
             for(GrantedAuthority ga : authentication.getAuthorities()) {//authentication 为在注释1 中循环添加到 GrantedAuthority 对象中的权限信息集合
                 if(needRole.trim().equals(ga.getAuthority())) {
                     return;

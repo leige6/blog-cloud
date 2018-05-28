@@ -1,6 +1,5 @@
 package com.leige.blog.config;
 
-import com.leige.blog.common.utils.MD5Util;
 import com.leige.blog.security.CustomUserService;
 import com.leige.blog.security.MyFilterSecurityInterceptor;
 import com.leige.blog.security.UnauthorizedEntryPoint;
@@ -14,11 +13,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -57,9 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 // 对于获取token的rest api要允许匿名访问
-                .antMatchers("/auth/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest().authenticated();
+                .antMatchers("/**.shtml").authenticated();
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
@@ -70,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/api/**","/css/**", "/js/**","/image/**","/plugs/**","*/**/*.png","*/**/*.jpg","/**.ico");
+        web.ignoring().antMatchers("/login.shtml","/login/**.shtml","/error.shtml","/api/**","/css/**", "/js/**","/image/**","/plugs/**","*/**/*.png","*/**/*.jpg","/**.ico");
     }
 
     @Bean
@@ -81,11 +76,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
         return new JwtAuthenticationTokenFilter();
-    }
-
-    @Bean
-    public MyFilterSecurityInterceptor getMyFilterSecurityInterceptor(){
-        return new MyFilterSecurityInterceptor();
     }
 
 }

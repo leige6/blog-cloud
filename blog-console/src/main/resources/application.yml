@@ -1,4 +1,6 @@
 spring:
+application:
+    name: blog-console
     datasource:
       name: test
       url: jdbc:mysql://112.74.111.197:3306/myblog?characterEncoding=utf-8&useSSL=false
@@ -19,6 +21,17 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+    redis:
+      host: 192.168.145.132
+      port: 6379
+      timeout: 20000
+      database: 1
+      #spring.redis.password=
+      pool:
+          max-active: 8
+          min-idle: 0
+          max-idle: 8
+          max-wait: -1
     freemarker:
       allow-request-override: false
       cache: false

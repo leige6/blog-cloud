@@ -25,6 +25,7 @@ public class BlogConsoleApplication extends SpringBootServletInitializer {
 	public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
 		ServletRegistrationBean reg = new ServletRegistrationBean(dispatcherServlet);
 		reg.getUrlMappings().clear();
+		reg.addUrlMappings("/");
 		reg.addUrlMappings("*.shtml");
 		reg.addUrlMappings("*.html");
 		reg.addUrlMappings("*.css");

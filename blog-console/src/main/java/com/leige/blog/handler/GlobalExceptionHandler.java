@@ -28,6 +28,9 @@ public class GlobalExceptionHandler {
         }else if(e instanceof AccessDeniedException){
             result.addObject("msg", ResultEnum.USER_UNAUTHOR.getMsg());
             result.addObject("code",ResultEnum.USER_UNAUTHOR.getCode());
+        }else{
+            result.addObject("msg",ResultEnum.ERROR_500.getMsg());
+            result.addObject("code", ResultEnum.ERROR_500.getCode());
         }
         return  result;
     }

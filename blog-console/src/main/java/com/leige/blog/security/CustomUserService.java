@@ -1,7 +1,9 @@
 package com.leige.blog.security;
 
+import com.leige.blog.common.utils.RedisUtil;
 import com.leige.blog.model.SysResource;
 import com.leige.blog.model.SysUser;
+import com.leige.blog.security.jwt.JwtUser;
 import com.leige.blog.security.jwt.JwtUserFactory;
 import com.leige.blog.service.SysResourceService;
 import com.leige.blog.service.SysUserService;
@@ -25,13 +27,19 @@ import java.util.List;
 @Component
 public class CustomUserService implements UserDetailsService {
 
+
     @Autowired
     private SysUserService sysUserService;
-
     @Autowired
     private SysResourceService sysResourceService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     public UserDetails loadUserByUsername(String username) {
+        JwtUser jwtUser=(JwtUser)redisUtil.getValue(username);
+        if(jwtUser!=null){
+            return jwtUser;
+        }
         SysUser user = sysUserService.getByUserName(username);
         if (user != null) {
 
@@ -45,7 +53,9 @@ public class CustomUserService implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             }
-            return JwtUserFactory.create(user,grantedAuthorities);
+            jwtUser=JwtUserFactory.create(user,grantedAuthorities);
+            redisUtil.setValue(username,jwtUser);
+            return jwtUser;
         } else {
             throw new UsernameNotFoundException("admin: " + username + " do not exist!");
         }

@@ -3,14 +3,12 @@ package com.leige.blog.security;
 import com.leige.blog.common.utils.RedisUtil;
 import com.leige.blog.model.SysResource;
 import com.leige.blog.model.SysUser;
-import com.leige.blog.security.jwt.JwtUser;
 import com.leige.blog.security.jwt.JwtUserFactory;
 import com.leige.blog.service.SysResourceService;
 import com.leige.blog.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,13 +34,8 @@ public class CustomUserService implements UserDetailsService {
     private RedisUtil redisUtil;
 
     public UserDetails loadUserByUsername(String username) {
-        JwtUser jwtUser=(JwtUser)redisUtil.getValue(username);
-        if(jwtUser!=null){
-            return jwtUser;
-        }
         SysUser user = sysUserService.getByUserName(username);
         if (user != null) {
-
             List<SysResource> permissions = sysResourceService.selectByUserId(user.getId());
             List<GrantedAuthority> grantedAuthorities = new ArrayList <>();
             for (SysResource permission : permissions) {
@@ -53,9 +46,7 @@ public class CustomUserService implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             }
-            jwtUser=JwtUserFactory.create(user,grantedAuthorities);
-            redisUtil.setValue(username,jwtUser);
-            return jwtUser;
+            return JwtUserFactory.create(user,grantedAuthorities);
         } else {
             throw new UsernameNotFoundException("admin: " + username + " do not exist!");
         }

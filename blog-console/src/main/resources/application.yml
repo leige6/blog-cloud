@@ -53,3 +53,7 @@ jwt:
     secret: mySecret
     expiration: 604800
     tokenHead: "Bearer "
+select:
+    cache:
+      default: 1800
+      refresh: 30

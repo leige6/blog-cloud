@@ -1,5 +1,6 @@
 package com.leige.blog.security;
 
+import com.leige.blog.common.utils.RedisUtil;
 import com.leige.blog.model.SysResource;
 import com.leige.blog.service.SysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class MyInvocationSecurityMetadataSourceService implements
 
     @Autowired
     private SysResourceService sysResourceService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     private HashMap<String, Collection<ConfigAttribute>> map =null;
 
@@ -31,18 +34,23 @@ public class MyInvocationSecurityMetadataSourceService implements
      * 加载权限表中所有权限
      */
     public void loadResourceDefine(){
-        map = new HashMap<>();
-        Collection<ConfigAttribute> array;
-        ConfigAttribute cfg;
-        List<SysResource> permissions = sysResourceService.selectAll();
-        for(SysResource permission : permissions) {
-            array = new ArrayList<>();
-            cfg = new SecurityConfig(permission.getValue());
-            //此处只添加了用户的名字，其实还可以添加更多权限的信息，例如请求方法到ConfigAttribute的集合中去。此处添加的信息将会作为MyAccessDecisionManager类的decide的第三个参数。
-            array.add(cfg);
-            //用权限的getUrl() 作为map的key，用ConfigAttribute的集合作为 value，
-            map.put(permission.getUrl(), array);
+        map=(HashMap<String, Collection<ConfigAttribute>>)redisUtil.getValue("all_resource");
+        if(map==null){
+            map = new HashMap<>();
+            Collection<ConfigAttribute> array;
+            ConfigAttribute cfg;
+            List<SysResource> permissions = sysResourceService.selectAll();
+            for(SysResource permission : permissions) {
+                array = new ArrayList<>();
+                cfg = new SecurityConfig(permission.getValue());
+                //此处只添加了用户的名字，其实还可以添加更多权限的信息，例如请求方法到ConfigAttribute的集合中去。此处添加的信息将会作为MyAccessDecisionManager类的decide的第三个参数。
+                array.add(cfg);
+                //用权限的getUrl() 作为map的key，用ConfigAttribute的集合作为 value，
+                map.put(permission.getUrl(), array);
+            }
+            redisUtil.setValue("all_resource",map);
         }
+
     }
 
     //此方法是为了判定用户请求的url 是否在权限表中，如果在权限表中，则返回给 decide 方法，用来判定用户是否有此权限。如果不在权限表中则放行。
@@ -52,6 +60,7 @@ public class MyInvocationSecurityMetadataSourceService implements
         //object 中包含用户请求的request 信息
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         String requestUrl=request.getRequestURI();
+
         if ((requestUrl!=null&&requestUrl.indexOf(".shtml")<0)||("/login.shtml".equals(requestUrl))||("/login/auth.shtml".equals(requestUrl))) {
             return null;
         }

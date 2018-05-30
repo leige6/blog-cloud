@@ -71,7 +71,7 @@ public class RedisConfig {
         RedisCacheManager cacheManager= new RedisCacheManager(redisTemplate);
         cacheManager.setDefaultExpiration(redisDefaultExpiration);
         Map<String,Long> expiresMap=new HashMap<>();
-        expiresMap.put("sysUser",30L);
+        //expiresMap.put("sysUser",30L);
         cacheManager.setExpires(expiresMap);
         return cacheManager;
     }

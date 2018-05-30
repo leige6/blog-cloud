@@ -10,6 +10,7 @@ import com.leige.blog.model.SysUser;
 import com.leige.blog.model.SysUserRole;
 import com.leige.blog.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,7 +85,9 @@ public class SysUserServiceImpl implements SysUserService {
         return res;
     }
 
+    //sync：设置如果缓存过期是不是只放一个请求去请求数据库，其他请求阻塞，默认是false。
     @Override
+    @Cacheable(value = "sysUser", key = "#userName", sync = true)
     public SysUser getByUserName(String userName) {
         return sysUserMapper.getByUserName(userName);
     }

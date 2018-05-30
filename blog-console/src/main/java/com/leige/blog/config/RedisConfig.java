@@ -51,10 +51,11 @@ public class RedisConfig {
 
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         // 全局开启AutoType，不建议使用
-        // ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
+         //ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         // 建议使用这种方式，小范围指定白名单
-        ParserConfig.getGlobalInstance().addAccept("com.leige.blog");
-
+        ParserConfig.getGlobalInstance().addAccept("com.leige.blog.");
+        ParserConfig.getGlobalInstance().addAccept("org.springframework.security.access.");
+        ParserConfig.getGlobalInstance().addAccept("java.util.");
         // 设置值（value）的序列化采用FastJsonRedisSerializer。
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);

@@ -5,6 +5,7 @@ import com.leige.blog.handler.exception.GlobalException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,10 +29,14 @@ public class GlobalExceptionHandler {
         }else if(e instanceof AccessDeniedException){
             result.addObject("msg", ResultEnum.USER_UNAUTHOR.getMsg());
             result.addObject("code",ResultEnum.USER_UNAUTHOR.getCode());
+        }else if(e instanceof HttpRequestMethodNotSupportedException){
+            result.addObject("msg",ResultEnum.REQUEST_ERROR.getMsg());
+            result.addObject("code", ResultEnum.REQUEST_ERROR.getCode());
         }else{
             result.addObject("msg",ResultEnum.ERROR_500.getMsg());
             result.addObject("code", ResultEnum.ERROR_500.getCode());
         }
+
         return  result;
     }
 }

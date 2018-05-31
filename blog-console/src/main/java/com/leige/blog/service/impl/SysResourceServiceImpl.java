@@ -36,7 +36,7 @@ public class SysResourceServiceImpl implements SysResourceService {
             all=sysResourceMapper.selectAll();
             redisUtil.setValue("all_resource",all);
         }
-        return sysResourceMapper.selectAll();
+        return all;
     }
 
     @Override

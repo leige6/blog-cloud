@@ -49,14 +49,13 @@ public class RSAServiceImpl implements RSAService {
 	}
 
 
-	public String decryptParameter(String name, HttpServletRequest request) {
+	public String decryptParameter(String enPassword, HttpServletRequest request) {
 		Assert.notNull(request);
-		if (name != null) {
+		if (enPassword != null) {
 			HttpSession session = request.getSession();
 			RSAPrivateKey privateKey = (RSAPrivateKey) session.getAttribute(PRIVATE_KEY_ATTRIBUTE_NAME);
-			String parameter = request.getParameter(name);
-			if (privateKey != null && StringUtils.isNotEmpty(parameter)) {
-				return RSAUtils.decrypt(privateKey, parameter);
+			if (privateKey != null && StringUtils.isNotEmpty(enPassword)) {
+				return RSAUtils.decrypt(privateKey, enPassword);
 			}
 		}
 		return null;

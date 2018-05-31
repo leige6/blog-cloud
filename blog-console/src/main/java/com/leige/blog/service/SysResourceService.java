@@ -22,7 +22,7 @@ public interface SysResourceService {
 
     List<Tree> selectAllTree();
 
-    List<Tree> selectTree();
+    List<Tree> selectTree(Long id);
 
     int insertSysResource(SysResource sysResource);
 

@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -24,10 +23,9 @@ import java.util.Set;
 @Service
 public class SysResourceServiceImpl implements SysResourceService {
     @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
     private SysResourceMapper sysResourceMapper;
-
+    @Autowired
+    private RedisUtil redisUtil;
     
     @Override
     public List<SysResource> selectAll() {
@@ -98,10 +96,10 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
     
     @Override
-    public List<Tree> selectTree() {
+    public List<Tree> selectTree(Long id) {
         List<Tree> trees = new ArrayList<Tree>();
         // shiro中缓存的用户角色
-        Set<SysResource>  menus= null;
+        List<SysResource>  menus=sysResourceMapper.selectByUserId(id);
         if (menus == null) {
             return trees;
         }

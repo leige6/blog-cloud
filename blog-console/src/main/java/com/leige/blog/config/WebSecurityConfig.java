@@ -1,5 +1,6 @@
 package com.leige.blog.config;
 
+import com.leige.blog.common.utils.MD5Util;
 import com.leige.blog.security.CustomUserService;
 import com.leige.blog.security.MyFilterSecurityInterceptor;
 import com.leige.blog.security.UnauthorizedEntryPoint;
@@ -13,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -37,10 +37,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(this.customUserService)
-                .passwordEncoder(passwordEncoder());
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(this.customUserService).passwordEncoder(new PasswordEncoder() {
+
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return MD5Util.encode((String) rawPassword);
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return encodedPassword.equals(MD5Util.encode((String) rawPassword));
+            }
+        });
     }
 
     @Override
@@ -56,8 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部需要鉴权认证
                 .antMatchers("/**.shtml","/").authenticated();
         // 添加JWT filter
-        httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
+        httpSecurity.mvcMatcher("*.shtml").addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.mvcMatcher("*.shtml").addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
         // 禁用缓存
         httpSecurity.headers().cacheControl();
 
@@ -65,13 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/login.shtml","/login/**.shtml","/error.shtml","/api/**","/css/**", "/js/**","/image/**","/plugs/**","*/**/*.png","*/**/*.jpg","/**.ico");
+        web.ignoring().antMatchers("/login.shtml","/common/**","/login/**.shtml","/error.shtml","/api/**","/css/**", "/js/**","/image/**","/plugs/**","*/**/*.png","*/**/*.jpg","/**.ico");
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {

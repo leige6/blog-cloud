@@ -32,6 +32,8 @@ public abstract class BaseController {
 		return new StringBuilder("redirect:").append(url).toString();
 	}
 
-	
+	protected Long getUserId(){
+		return 1L;
+	}
 
 }

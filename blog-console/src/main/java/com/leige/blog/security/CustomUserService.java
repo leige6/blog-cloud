@@ -3,6 +3,7 @@ package com.leige.blog.security;
 import com.leige.blog.common.utils.RedisUtil;
 import com.leige.blog.model.SysResource;
 import com.leige.blog.model.SysUser;
+import com.leige.blog.security.jwt.JwtUser;
 import com.leige.blog.security.jwt.JwtUserFactory;
 import com.leige.blog.service.SysResourceService;
 import com.leige.blog.service.SysUserService;
@@ -46,7 +47,9 @@ public class CustomUserService implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             }
-            return JwtUserFactory.create(user,grantedAuthorities);
+            JwtUser jwtUser=JwtUserFactory.create(user,grantedAuthorities);
+            redisUtil.setValue(username,jwtUser);
+            return jwtUser;
         } else {
             throw new UsernameNotFoundException("admin: " + username + " do not exist!");
         }

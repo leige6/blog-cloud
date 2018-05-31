@@ -35,9 +35,9 @@ public class AuthController {
         if(StringUtils.isEmpty(password)){
             return  ResultUtil.fail(ResultEnum.PASSWORD_NOT_BLANK);
         }
-        final String token = authService.login(username, password);
+
         HashMap<String,Object> data=new HashMap<>();
-        data.put("token",token);
+       // data.put("token",token);
         return  ResultUtil.success(ResultEnum.LOGIN_IN_SUCCESS,data);
     }
 

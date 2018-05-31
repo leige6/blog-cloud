@@ -2,6 +2,7 @@ package com.leige.blog.service.impl;
 
 
 import com.leige.blog.common.ConstantStr;
+import com.leige.blog.common.utils.RedisUtil;
 import com.leige.blog.common.utils.result.Tree;
 import com.leige.blog.mapper.SysResourceMapper;
 import com.leige.blog.model.SysResource;
@@ -22,14 +23,19 @@ import java.util.Set;
 @Transactional
 @Service
 public class SysResourceServiceImpl implements SysResourceService {
-
-
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private SysResourceMapper sysResourceMapper;
 
     
     @Override
     public List<SysResource> selectAll() {
+        List<SysResource> all=(List<SysResource>)redisUtil.getValue("all_resource");
+        if(all==null){
+            all=sysResourceMapper.selectAll();
+            redisUtil.setValue("all_resource",all);
+        }
         return sysResourceMapper.selectAll();
     }
 

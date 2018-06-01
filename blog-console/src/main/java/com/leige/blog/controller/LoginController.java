@@ -62,8 +62,7 @@ public class LoginController extends BaseController {
         String ip= IpHelper.getClientIpAddress(request);
         rsaService.removePrivateKey(request);
         try {
-            String token=authService.login(userName,password);
-            request.getSession().setAttribute(tokenHeader,token);
+            authService.login(request,userName,password);
             return ResultUtil.success(ResultEnum.LOGIN_IN_SUCCESS,null);
         }catch (UsernameNotFoundException e) {
             throw new GlobalException(ResultEnum.USERNAME_NOT_BLANK);

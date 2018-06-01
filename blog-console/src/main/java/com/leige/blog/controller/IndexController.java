@@ -20,6 +20,7 @@ public class IndexController extends BaseController {
       */
     @GetMapping(value = {"/","/index"})
     public String  index() {
+        System.out.println("index");
         return "index";
     }
 

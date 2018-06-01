@@ -51,11 +51,10 @@ public class MyInvocationSecurityMetadataSourceService implements
         if(map ==null) loadResourceDefine();
         //object 中包含用户请求的request 信息
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
-        String requestUrl=request.getRequestURI();
-        if ((requestUrl!=null&&requestUrl.indexOf(".shtml")<0)||("/login.shtml".equals(requestUrl))||("/login/auth.shtml".equals(requestUrl))) {
+        AntPathRequestMatcher matcher=new AntPathRequestMatcher("/**/*.shtml");
+        if (!matcher.matches(request)) {
             return null;
         }
-        AntPathRequestMatcher matcher;
         String resUrl;
         for(Iterator<String> iter = map.keySet().iterator(); iter.hasNext(); ) {
             resUrl = iter.next();

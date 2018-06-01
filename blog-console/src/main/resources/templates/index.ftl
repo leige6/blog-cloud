@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <!DOCTYPE html>
 <html>
 <head>
@@ -187,11 +188,11 @@
             <div>
                 <span style="float: right; padding-right: 20px; margin-top: 15px; color: #333">
                     <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" icon="fi-torso">
-	                    <b><@shiro.principal></@shiro.principal></b>&nbsp;&nbsp;
+	                    <b><@security.authentication property="principal.username"></@security.authentication></b>&nbsp;&nbsp;
                     </a>
-                    <@shiro.hasPermission name="sysUser:editPwd">
+
                         <a href="javascript:void(0)" onclick="editUserPwd()" class="easyui-linkbutton" plain="true" icon="fi-wrench" >修改密码</a>
-                    </@shiro.hasPermission>&nbsp;&nbsp;
+                    &nbsp;&nbsp;
                     <a href="javascript:void(0)" onclick="logout()" class="easyui-linkbutton" plain="true" icon="fi-x">安全退出</a>
                 </span>
                 <span class="header"></span>

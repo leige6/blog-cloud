@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @SpringBootApplication
 @EnableTransactionManagement //如果mybatis中service实现类中加入事务注解，需要此处添加该注解
 @MapperScan("com.leige.blog.mapper")//扫描的是mapper.xml中namespace指向值的包位置
+@ServletComponentScan
 public class BlogConsoleApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(BlogConsoleApplication.class, args);
@@ -25,7 +27,7 @@ public class BlogConsoleApplication extends SpringBootServletInitializer {
 	public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
 		ServletRegistrationBean reg = new ServletRegistrationBean(dispatcherServlet);
 		reg.getUrlMappings().clear();
-		reg.addUrlMappings("/");
+		//reg.addUrlMappings("/");
 		reg.addUrlMappings("*.shtml");
 		reg.addUrlMappings("*.html");
 		reg.addUrlMappings("*.css");
@@ -38,6 +40,7 @@ public class BlogConsoleApplication extends SpringBootServletInitializer {
 		reg.addUrlMappings("*.woff");
 		reg.addUrlMappings("*.woff2");
 		reg.addUrlMappings("*.swf");
+		reg.addUrlMappings("*.tld");
 		return reg;
 	}
 

@@ -63,8 +63,9 @@ public class MyblogCaptcha implements InitializingBean {
 		// 先检查cookie的uuid是否存在
 		String captchaCode = CaptchaUtils.generateCode().toUpperCase();// 转成大写重要
 		// 生成验证码
-		CaptchaUtils.generate(response, captchaCode);
 		request.getSession().setAttribute(cacheName,captchaCode);
+		CaptchaUtils.generate(response, captchaCode);
+
 	}
 	
 	/**

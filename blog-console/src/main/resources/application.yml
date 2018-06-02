@@ -57,3 +57,7 @@ select:
     cache:
       default: 1800
       refresh: 30
+login:
+    fail:
+      maxattempt: 2
+      locktime: 600

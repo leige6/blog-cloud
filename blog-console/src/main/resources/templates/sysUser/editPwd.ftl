@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <script type="text/javascript">
     $(function() {
         $('#editUserPwdForm').form({
@@ -30,7 +31,7 @@
             <table class="grid">
                 <tr>
                     <td>登录名</td>
-                    <td><@shiro.principal></@shiro.principal></td>
+                    <td><@security.authentication property="principal.username"></@security.authentication></td>
                 </tr>
                 <tr>
                     <td>原密码</td>

@@ -36,6 +36,8 @@ public class HTTPUtils {
      *  判断是否为ajax请求
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
+        String accpt=request.getHeader("accept");
+        String rw=request.getHeader("X-Requested-With");
         if (request.getHeader("accept").indexOf("application/json") > -1
                 || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").equals(
                 "XMLHttpRequest"))) {

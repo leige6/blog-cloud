@@ -1,10 +1,14 @@
 package com.leige.blog.common.base.controller;
 
 
+import com.leige.blog.security.jwt.JwtUser;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,8 +36,10 @@ public abstract class BaseController {
 		return new StringBuilder("redirect:").append(url).toString();
 	}
 
-	protected Long getUserId(){
-		return 1L;
+	protected Long getUserId(HttpServletRequest request){
+		SecurityContext context=(SecurityContext)request.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+		JwtUser jwtUser=(JwtUser) context.getAuthentication().getPrincipal();
+		return jwtUser.getId();
 	}
 
 }

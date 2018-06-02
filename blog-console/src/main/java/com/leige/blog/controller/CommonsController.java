@@ -65,7 +65,7 @@ public class CommonsController extends BaseController {
     @ResponseBody
     //@RequiresAuthentication
     public List<Tree> getMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-        List<Tree> trees= sysPermissionService.selectTree(this.getUserId());
+        List<Tree> trees= sysPermissionService.selectTree(this.getUserId(request));
         return trees;
     }
 

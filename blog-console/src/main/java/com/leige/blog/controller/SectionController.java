@@ -94,9 +94,9 @@ public class SectionController extends BaseController {
     @RequestMapping("add")
     //@RequiresPermissions("section:add")
     @ResponseBody
-    public Result add(@Valid Section section) {
+    public Result add(@Valid Section section,HttpServletRequest request) {
         section.setCreatorTime(new Date());
-        section.setCreatorId(this.getUserId());
+        section.setCreatorId(this.getUserId(request));
         section.setIsDel(0);
         int r1 = sectionService.insertSection(section);
         Long id=section.getId();
@@ -119,9 +119,9 @@ public class SectionController extends BaseController {
     @RequestMapping("edit")
     //@RequiresPermissions("section:edit")
     @ResponseBody
-    public Result edit(@Valid Section Section) {
+    public Result edit(@Valid Section Section,HttpServletRequest request) {
         Section.setUpdateTime(new Date());
-        Section.setUpdateId(this.getUserId());
+        Section.setUpdateId(this.getUserId(request));
         Section.setUpdateCount(Section.getUpdateCount() == null ? 1 : (Section.getUpdateCount() + 1));
         Long id=Section.getId();
         if(Section.getPid()!=null){

@@ -43,7 +43,15 @@
     select
     <include refid="Base_Column_List" />
     from sys_resource  sp
-    WHERE sp.type!=0
+    WHERE sp.is_del=0
+  </select>
+
+  <select id="selectAllUserRes" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource  sp
+    WHERE sp.type=1
+    and sp.is_del=0
   </select>
 
   <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">

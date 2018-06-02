@@ -36,6 +36,7 @@ public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
             }
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(result.getBytes("UTF-8"));
+            response.setHeader("oauthstatus","401");
             response.getOutputStream().flush();
         }else{
             response.sendRedirect("/login.shtml");

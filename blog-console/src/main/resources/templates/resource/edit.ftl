@@ -39,7 +39,7 @@
 </script>
 <div style="padding: 3px;">
     <form id="resourceEditForm" method="post">
-        <input type="hidden" name="token" value="${token}">
+        <input type="hidden" name="token" value="${token!}">
         <table  class="grid">
             <tr>
                 <td>资源名称</td>

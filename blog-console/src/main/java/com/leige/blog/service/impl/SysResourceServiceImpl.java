@@ -29,9 +29,14 @@ public class SysResourceServiceImpl implements SysResourceService {
     
     @Override
     public List<SysResource> selectAll() {
+        return sysResourceMapper.selectAll();
+    }
+
+    @Override
+    public List<SysResource> selectAllUserRes() {
         List<SysResource> all=(List<SysResource>)redisUtil.getValue("all_resource");
         if(all==null){
-            all=sysResourceMapper.selectAll();
+            all=sysResourceMapper.selectAllUserRes();
             redisUtil.setValue("all_resource",all);
         }
         return all;
@@ -99,7 +104,7 @@ public class SysResourceServiceImpl implements SysResourceService {
     public List<Tree> selectTree(Long id) {
         List<Tree> trees = new ArrayList<Tree>();
         // shiro中缓存的用户角色
-        List<SysResource>  menus=sysResourceMapper.selectByUserId(id);
+        List<SysResource>  menus=sysResourceMapper.selectByType(ConstantStr.MENU_YTPE);
         if (menus == null) {
             return trees;
         }

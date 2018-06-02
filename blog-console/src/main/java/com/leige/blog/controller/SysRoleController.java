@@ -90,16 +90,16 @@ public class SysRoleController extends BaseController {
     @RequestMapping("save")
     //@RequiresPermissions("role:save")
     @ResponseBody
-    public Result add(@Valid SysRole sysRole) {
+    public Result add(@Valid SysRole sysRole,HttpServletRequest request) {
         if((sysRole.getId()!=null)&&(sysRole.getId()!=0)){
             sysRole.setUpdateTime(new Date());
-            sysRole.setUpdateId(this.getUserId());
+            sysRole.setUpdateId(this.getUserId(request));
             sysRole.setUpdateCount(sysRole.getUpdateCount()==null?1:(sysRole.getUpdateCount()+1));
             int res=sysRoleService.editSysRole(sysRole);
             return res>0? ResultUtil.success(ResultEnum.ROLE_EDIT_SUCCESS,null):ResultUtil.fail(ResultEnum.ROLE_EDIT_FAIL);
         }else{
             sysRole.setCreatorTime(new Date());
-            sysRole.setCreatorId(this.getUserId());
+            sysRole.setCreatorId(this.getUserId(request));
             sysRole.setIsDel(0);
             int res=sysRoleService.insertSysRole(sysRole);
             return res>0?ResultUtil.success(ResultEnum.ROLE_ADD_SUCCESS,null):ResultUtil.fail(ResultEnum.ROLE_ADD_FAIL);

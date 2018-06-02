@@ -15,6 +15,8 @@ public interface SysResourceMapper extends Mapper<SysResource> {
 
    public List<SysResource> selectAll();
 
+   public List<SysResource> selectAllUserRes();
+
    public List<SysResource> selectByUserId(long userId);
 
    public List<SysResource> selectByType(Integer type);

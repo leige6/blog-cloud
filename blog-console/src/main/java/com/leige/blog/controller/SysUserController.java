@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -111,7 +112,7 @@ public class SysUserController extends BaseController {
     //@RequiresRoles("admin")
     //@RequiresPermissions("sysUser:add")
     @ResponseBody
-    public Result add(@Valid SysUser sysUser) {
+    public Result add(@Valid SysUser sysUser,HttpServletRequest request) {
         String password=sysUser.getPassword();
         if(StringUtils.isNotBlank(password)){
             sysUser.setPassword(DigestUtils.md5Hex(password));
@@ -120,7 +121,7 @@ public class SysUserController extends BaseController {
         }
         sysUser.setIsLocked(0);
         sysUser.setCreatorTime(new Date());
-        sysUser.setCreatorId(this.getUserId());
+        sysUser.setCreatorId(this.getUserId(request));
         sysUser.setIsDel(0);
         int res = sysUserService.insertSysUser(sysUser);
         return res > 0 ? ResultUtil.success(ResultEnum.USER_ADD_SUCCESS, null) : ResultUtil.fail(ResultEnum.USER_ADD_FAIL);
@@ -134,7 +135,7 @@ public class SysUserController extends BaseController {
     //@RequiresRoles("admin")
     //@RequiresPermissions("sysUser:edit")
     @ResponseBody
-    public Result edit(@Valid SysUser sysUser) {
+    public Result edit(@Valid SysUser sysUser,HttpServletRequest request) {
         String password=sysUser.getPassword();
         if(StringUtils.isNotBlank(password)){
             sysUser.setPassword(DigestUtils.md5Hex(password));
@@ -142,7 +143,7 @@ public class SysUserController extends BaseController {
             sysUser.setPassword(null);
         }
         sysUser.setUpdateTime(new Date());
-        sysUser.setUpdateId(this.getUserId());
+        sysUser.setUpdateId(this.getUserId(request));
         sysUser.setUpdateCount(sysUser.getUpdateCount() == null ? 1 : (sysUser.getUpdateCount() + 1));
         int res = sysUserService.upadteSysUser(sysUser);
         return res > 0 ? ResultUtil.success(ResultEnum.USER_EDIT_SUCCESS, null) : ResultUtil.fail(ResultEnum.USER_EDIT_FAIL);
@@ -217,8 +218,8 @@ public class SysUserController extends BaseController {
     @RequestMapping("editPwd")
     //@RequiresPermissions("sysUser:editPwd")
     @ResponseBody
-    public Result editPwd(String oldPwd,String pwd) {
-        Long userId=this.getUserId();
+    public Result editPwd(String oldPwd,String pwd,HttpServletRequest request) {
+        Long userId=this.getUserId(request);
         SysUser sysUser=sysUserService.selectByid(userId);
         String oldPwdstr= DigestUtils.md5Hex(oldPwd);
         if(!oldPwdstr.equals(sysUser.getPassword())){

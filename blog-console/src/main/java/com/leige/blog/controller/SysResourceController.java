@@ -80,16 +80,17 @@ public class SysResourceController extends BaseController {
     //@RequiresPermissions("resource:save")
     @ResponseBody
     @AvoidDuplicateSubmission(needRemoveToken = true)
-    public Result add(@Valid SysResource sysPermission) {
+    public Result add(@Valid SysResource sysPermission,HttpServletRequest request,HttpServletResponse response) {
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
         if((sysPermission.getId()!=null)&&(sysPermission.getId()!=0)){
             sysPermission.setUpdateTime(new Date());
-            sysPermission.setUpdateId(this.getUserId());
+            sysPermission.setUpdateId(this.getUserId(request));
             sysPermission.setUpdateCount(sysPermission.getUpdateCount()==null?1:(sysPermission.getUpdateCount()+1));
             int res=sysResourceService.editSysResource(sysPermission);
             return res>0? ResultUtil.success(ResultEnum.RESOURCE_EDIT_SUCCESS,null):ResultUtil.fail(ResultEnum.RESOURCE_EDIT_FAIL);
         }else{
             sysPermission.setCreatorTime(new Date());
-            sysPermission.setCreatorId(this.getUserId());
+            sysPermission.setCreatorId(this.getUserId(request));
             sysPermission.setIsDel(0);
             // 选择菜单时将openMode设置为null
             Integer type = sysPermission.getType();

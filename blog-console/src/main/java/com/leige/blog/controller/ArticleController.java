@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,7 +98,7 @@ public class ArticleController extends BaseController {
     @RequestMapping("add")
     //@RequiresPermissions("article:add")
     @ResponseBody
-    public Result add(@Valid Article article) {
+    public Result add(@Valid Article article,HttpServletRequest request) {
         article.setHateNumber(0);
         article.setLikesNumber(0);
         article.setReplyNumber(0);
@@ -107,12 +108,12 @@ public class ArticleController extends BaseController {
 
         if(article.getPublishStatus()!=null&&article.getPublishStatus()==1){
             article.setPublishStatus(1);
-            article.setPublishId(this.getUserId());
+            article.setPublishId(this.getUserId(request));
             article.setPublishTime(new Date());
             article.setCreatorTime(new Date());
-            article.setCreatorId(this.getUserId());
+            article.setCreatorId(this.getUserId(request));
             article.setCreatorTime(new Date());
-            article.setCreatorId(this.getUserId());
+            article.setCreatorId(this.getUserId(request));
             article.setIsQuick(1);
             article.setIsDel(0);
             int res=articleService.insertArticle(article);
@@ -121,9 +122,9 @@ public class ArticleController extends BaseController {
             article.setIsQuick(0);
             article.setPublishStatus(0);
             article.setCreatorTime(new Date());
-            article.setCreatorId(this.getUserId());
+            article.setCreatorId(this.getUserId(request));
             article.setCreatorTime(new Date());
-            article.setCreatorId(this.getUserId());
+            article.setCreatorId(this.getUserId(request));
             article.setIsDel(0);
             int res=articleService.insertArticle(article);
             return res>0?ResultUtil.success(ResultEnum.ARTICLE_ADD_SUCCESS,null):ResultUtil.fail(ResultEnum.ARTICLE_ADD_FAIL);
@@ -136,9 +137,9 @@ public class ArticleController extends BaseController {
     @RequestMapping("edit")
     //@RequiresPermissions("article:edit")
     @ResponseBody
-    public Result edit(@Valid Article article) {
+    public Result edit(@Valid Article article,HttpServletRequest request) {
         article.setUpdateTime(new Date());
-        article.setUpdateId(this.getUserId());
+        article.setUpdateId(this.getUserId(request));
         article.setUpdateCount(article.getUpdateCount()==null?1:(article.getUpdateCount()+1));
         int res=articleService.updateArticle(article);
         return res>0?ResultUtil.success(ResultEnum.ARTICLE_EDIT_SUCCESS,null):ResultUtil.fail(ResultEnum.ARTICLE_EDIT_FAIL);
@@ -167,11 +168,11 @@ public class ArticleController extends BaseController {
     @RequestMapping("publish")
     //@RequiresPermissions("article:publish")
     @ResponseBody
-    public Result lock(Long id,Integer isPublished) {
+    public Result lock(Long id,Integer isPublished,HttpServletRequest request) {
         Article article=new Article();
         article.setId(id);
         article.setPublishStatus(isPublished==1?0:1);
-        article.setPublishId(this.getUserId());
+        article.setPublishId(this.getUserId(request));
         article.setPublishTime(new Date());
         int res = articleService.updateArticle(article);
         if(isPublished==0){

@@ -91,9 +91,9 @@ public class OrganizationController extends BaseController {
     @RequestMapping("add")
     //@RequiresPermissions("org:add")
     @ResponseBody
-    public Result add(@Valid SysOrganization organization) {
+    public Result add(@Valid SysOrganization organization,HttpServletRequest request) {
         organization.setCreatorTime(new Date());
-        organization.setCreatorId(this.getUserId());
+        organization.setCreatorId(this.getUserId(request));
         organization.setIsDel(0);
         int r1 = organizationService.insertOrganization(organization);
         Long id=organization.getId();
@@ -116,9 +116,9 @@ public class OrganizationController extends BaseController {
     @RequestMapping("edit")
     //@RequiresPermissions("org:edit")
     @ResponseBody
-    public Result edit(@Valid SysOrganization organization) {
+    public Result edit(@Valid SysOrganization organization,HttpServletRequest request) {
         organization.setUpdateTime(new Date());
-        organization.setUpdateId(this.getUserId());
+        organization.setUpdateId(this.getUserId(request));
         organization.setUpdateCount(organization.getUpdateCount() == null ? 1 : (organization.getUpdateCount() + 1));
         Long id=organization.getId();
         if(organization.getPid()!=null){

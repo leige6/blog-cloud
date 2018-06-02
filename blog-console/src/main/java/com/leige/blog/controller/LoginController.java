@@ -9,6 +9,7 @@ import com.leige.blog.common.utils.result.Result;
 import com.leige.blog.common.utils.result.ResultUtil;
 import com.leige.blog.handler.exception.GlobalException;
 import com.leige.blog.service.AuthService;
+import com.leige.blog.service.LoginAttemptService;
 import com.leige.blog.service.RSAService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class LoginController extends BaseController {
     private AuthService authService;
     @Autowired
     private RSAService rsaService;
-
+    @Autowired
+    private LoginAttemptService loginAttemptService;
     @Value("${jwt.header}")
     private String tokenHeader;
     /**
@@ -58,6 +60,8 @@ public class LoginController extends BaseController {
        if(!myblogCaptcha.validate(request,captcha)) {
            throw new GlobalException(ResultEnum.CAPTCHA_ERROR);
        }
+        if(loginAttemptService.isBlocked(userName))
+            throw new GlobalException(ResultEnum.USERNAME_IS_LOCK);
         String password = rsaService.decryptParameter(enPassword, request);
         String ip= IpHelper.getClientIpAddress(request);
         rsaService.removePrivateKey(request);

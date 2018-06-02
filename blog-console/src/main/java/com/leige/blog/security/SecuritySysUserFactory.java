@@ -1,17 +1,17 @@
-package com.leige.blog.security.jwt;
+package com.leige.blog.security;
 
 import com.leige.blog.model.SysUser;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
-public final class JwtUserFactory {
+public final class SecuritySysUserFactory {
 
-    private JwtUserFactory() {
+    private SecuritySysUserFactory() {
     }
 
-    public static JwtUser create(SysUser user,List<GrantedAuthority> authorities) {
-        return new JwtUser(
+    public static SecuritySysUser create(SysUser user, List<GrantedAuthority> authorities) {
+        return new SecuritySysUser(
                 user.getId(),
                 user.getUserName(),
                 user.getPassword(),

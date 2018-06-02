@@ -10,5 +10,4 @@ import javax.servlet.http.HttpServletRequest;
 public interface AuthService {
     SysUser register(SysUser userToAdd);
     void login(HttpServletRequest request, String username, String password);
-    String refresh(String oldToken);
 }

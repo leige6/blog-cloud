@@ -1,4 +1,4 @@
-package com.leige.blog.security.jwt;
+package com.leige.blog.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
-public class JwtUser implements UserDetails {
+public class SecuritySysUser implements UserDetails {
     private final Long id;
     private final String username;
     private final String password;
@@ -15,7 +15,7 @@ public class JwtUser implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
     private final Date lastPasswordResetDate;
 
-    public JwtUser(
+    public SecuritySysUser(
             Long id,
             String username,
             String password,

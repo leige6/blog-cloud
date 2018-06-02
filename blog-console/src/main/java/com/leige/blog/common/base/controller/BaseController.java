@@ -1,10 +1,9 @@
 package com.leige.blog.common.base.controller;
 
 
-import com.leige.blog.security.jwt.JwtUser;
+import com.leige.blog.security.SecuritySysUser;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -38,7 +37,7 @@ public abstract class BaseController {
 
 	protected Long getUserId(HttpServletRequest request){
 		SecurityContext context=(SecurityContext)request.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
-		JwtUser jwtUser=(JwtUser) context.getAuthentication().getPrincipal();
+		SecuritySysUser jwtUser=(SecuritySysUser) context.getAuthentication().getPrincipal();
 		return jwtUser.getId();
 	}
 

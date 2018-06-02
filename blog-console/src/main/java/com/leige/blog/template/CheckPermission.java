@@ -1,6 +1,5 @@
 package com.leige.blog.template;
 
-import com.leige.blog.security.jwt.JwtUser;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.apache.commons.lang3.StringUtils;

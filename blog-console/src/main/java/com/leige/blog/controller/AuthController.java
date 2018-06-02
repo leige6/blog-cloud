@@ -4,12 +4,10 @@ import com.leige.blog.common.enums.ResultEnum;
 import com.leige.blog.common.utils.result.Result;
 import com.leige.blog.common.utils.result.ResultUtil;
 import com.leige.blog.model.SysUser;
-import com.leige.blog.security.jwt.JwtAuthenticationResponse;
 import com.leige.blog.service.AuthService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,18 +37,6 @@ public class AuthController {
         HashMap<String,Object> data=new HashMap<>();
        // data.put("token",token);
         return  ResultUtil.success(ResultEnum.LOGIN_IN_SUCCESS,data);
-    }
-
-    @RequestMapping(value = "/login/refresh", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshAndGetAuthenticationToken(
-            HttpServletRequest request) throws AuthenticationException{
-        String token = request.getHeader(tokenHeader);
-        String refreshedToken = authService.refresh(token);
-        if(refreshedToken == null) {
-            return ResponseEntity.badRequest().body(null);
-        } else {
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
-        }
     }
 
     @RequestMapping(value = "/login/register", method = RequestMethod.POST)

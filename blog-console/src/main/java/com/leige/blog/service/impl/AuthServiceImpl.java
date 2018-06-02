@@ -2,7 +2,6 @@ package com.leige.blog.service.impl;
 
 
 import com.leige.blog.model.SysUser;
-import com.leige.blog.security.jwt.JwtTokenUtil;
 import com.leige.blog.service.AuthService;
 import com.leige.blog.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import java.util.Date;
 public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
-    private JwtTokenUtil jwtTokenUtil;
     private SysUserService sysUserService;
 
     @Value("${jwt.tokenHead}")
@@ -35,11 +33,9 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
-            JwtTokenUtil jwtTokenUtil,
             SysUserService sysUserService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
-        this.jwtTokenUtil = jwtTokenUtil;
         this.sysUserService = sysUserService;
     }
 
@@ -68,16 +64,5 @@ public class AuthServiceImpl implements AuthService {
         //final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         //final String token = jwtTokenUtil.generateToken(username);
         //return token;
-    }
-
-    @Override
-    public String refresh(String oldToken) {
-        final String token = oldToken.substring(tokenHead.length());
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        SysUser user = (SysUser) userDetailsService.loadUserByUsername(username);
-        if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())){
-            return jwtTokenUtil.refreshToken(token);
-        }
-        return null;
     }
 }

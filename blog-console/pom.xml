@@ -94,7 +94,7 @@
 		</dependency>
 		<!-- freemarker对SpringSecurity的支持 -->
 		<dependency>
-			﻿<groupId>org.springframework.security</groupId>
+			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
 		<dependency>
@@ -136,9 +136,9 @@
 		</dependency>
 		<!--UEditor依赖的jar包 -->
 		<dependency>
-			<groupId>com.vjinke.thirdparty</groupId>
+			<groupId>com.baidu</groupId>
 			<artifactId>ueditor</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>

@@ -1,8 +1,11 @@
 package com.leige.blog.security;
 
+import com.leige.blog.common.enums.ResultEnum;
 import com.leige.blog.common.utils.RedisUtil;
+import com.leige.blog.handler.exception.GlobalException;
 import com.leige.blog.model.SysResource;
 import com.leige.blog.model.SysUser;
+import com.leige.blog.service.LoginAttemptService;
 import com.leige.blog.service.SysResourceService;
 import com.leige.blog.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,6 @@ import java.util.List;
  */
 @Component
 public class CustomUserService implements UserDetailsService {
-
 
     @Autowired
     private SysUserService sysUserService;

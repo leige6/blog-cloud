@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leige.blog.mapper.SysRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.leige.blog.model.SysRole" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="creator_id" property="creatorId" jdbcType="BIGINT" />
+    <result column="creator_time" property="creatorTime" jdbcType="TIMESTAMP" />
+    <result column="update_count" property="updateCount" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="BIGINT" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <collection property="sysResources" column="id" ofType="com.leige.blog.model.SysResource" javaType="ArrayList"
+                select="com.blog.mapper.SysResourceMapper.selectSysResourceByRoleId">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="name"  property="name" />
+      <result column="url"  property="url" />
+      <result column="open_mode"  property="openMode" />
+      <result column="description"  property="description" />
+      <result column="icon" property="icon" />
+      <result column="pid"  property="pid" />
+      <result column="seq"  property="seq" />
+      <result column="is_able"  property="isAble" />
+      <result column="creator_id"  property="creatorId" />
+      <result column="creator_time"  property="creatorTime" />
+      <result column="update_count"  property="updateCount" />
+      <result column="update_time"  property="updateTime" />
+      <result column="update_id"  property="updateId" />
+      <result column="is_del"  property="isDel" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sr.id, sr.name,sr.value, sr.description, sr.seq, sr.creator_id, sr.creator_time, sr.update_count,
+    sr.update_time, sr.update_id, sr.is_del,sr.status
+  </sql>
+
+  <select id="selectSysRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select <include refid="Base_Column_List"/>  from sys_role sr,sys_user_role sur where sr.id=sur.role_id and sur.user_id = #{uid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectDataGrid" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select  id, name,value, description, seq, creator_id, creator_time, update_count,
+    update_time, update_id, is_del,status from sys_role where is_del=0
+    order by ${sort} ${order}
+  </select>
+
+  <select id="selectResourceIdListByRoleId" resultType="java.lang.Long" parameterType="java.lang.Long" >
+    select per_id  from sys_role_resource  where  role_id = #{rid}
+  </select>
+
+
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from sys_user_role
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertSysUserRoleByBatch" parameterType="java.util.List">
+    insert into sys_user_role (user_id, role_id)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.userId,jdbcType=BIGINT}, #{item.roleId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+</mapper>

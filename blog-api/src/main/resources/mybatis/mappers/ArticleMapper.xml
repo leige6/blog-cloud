@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leige.blog.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.leige.blog.model.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="reply_flag" property="replyFlag" jdbcType="INTEGER" />
+    <result column="top_flag" property="topFlag" jdbcType="INTEGER" />
+    <result column="top_start" property="topStart" jdbcType="TIMESTAMP" />
+    <result column="top_end" property="topEnd" jdbcType="TIMESTAMP" />
+    <result column="verify_status" property="verifyStatus" jdbcType="INTEGER" />
+    <result column="verify_opinion" property="verifyOpinion" jdbcType="VARCHAR" />
+    <result column="verify_id" property="verifyId" jdbcType="BIGINT" />
+    <result column="verify_time" property="verifyTime" jdbcType="TIMESTAMP" />
+    <result column="publish_status" property="publishStatus" jdbcType="INTEGER" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="publish_id" property="publishId" jdbcType="BIGINT" />
+    <result column="likes_number" property="likesNumber" jdbcType="INTEGER" />
+    <result column="hate_number" property="hateNumber" jdbcType="INTEGER" />
+    <result column="view_number" property="viewNumber" jdbcType="INTEGER" />
+    <result column="reply_number" property="replyNumber" jdbcType="INTEGER" />
+    <result column="illegal_number" property="illegalNumber" jdbcType="INTEGER" />
+    <result column="is_quick" property="isQuick" jdbcType="INTEGER" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="creator_id" property="creatorId" jdbcType="BIGINT" />
+    <result column="creator_time" property="creatorTime" jdbcType="TIMESTAMP" />
+    <result column="update_count" property="updateCount" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="BIGINT" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="tag_id" property="tagId" jdbcType="VARCHAR" />
+    <result column="section_id" property="sectionId" jdbcType="BIGINT" />
+    <result column="creator_name" property="creatorName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.leige.blog.model.Article" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ar.id, ar.title, ar.summary, ar.source, ar.icon, ar.type, ar.reply_flag, ar.top_flag, ar.top_start, ar.top_end,
+    ar.verify_status, ar.verify_opinion, ar.verify_id, ar.verify_time, ar.publish_status, ar.publish_time,
+    ar.publish_id, ar.likes_number, ar.hate_number, ar.view_number, ar.reply_number, ar.illegal_number,
+    ar.is_quick, ar.seq, ar.creator_id, ar.creator_time, ar.update_count, ar.update_time, ar.update_id, ar.is_del,
+    ar.tag_id, ar.section_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    ar.content
+  </sql>
+
+  <select id="selectDataGrid" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    su.user_name AS creator_name,
+    <include refid="Base_Column_List" />from article ar
+    LEFT JOIN sys_user su ON su.id = ar.creator_id and  su.is_del=0
+    LEFT JOIN section se ON se.id = ar.section_id and se.is_del=0
+    <where>
+      ar.is_del=0
+      <if test=" title != null and title != '' ">
+        and ar.title LIKE concat(concat('%',#{title}),'%')
+      </if>
+      <if test=" publishor != null and publishor != '' ">
+        and su.user_name LIKE concat(concat('%',#{publishor}),'%')
+      </if>
+      <if test=" sectionId != null ">
+        and se.value LIKE concat(concat('%',#{sectionId}),',%')
+      </if>
+      <if test=" startTime != null ">
+        <![CDATA[ and ar.creator_time >= #{startTime} ]]>
+      </if>
+      <if test=" endTime != null ">
+        <![CDATA[ and ar.creator_time <= #{endTime} ]]>
+      </if>
+    </where>
+    order by ${sort} ${order}
+  </select>
+</mapper>

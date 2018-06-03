@@ -1,0 +1,197 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+}
+*{
+    box-sizing: border-box;
+}
+h3{
+    font-size: 24px;
+}
+.head {
+    margin-top: 100px;
+    margin-bottom: 10px;
+    height: 80px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.head .head-inner{
+    width: 1000px;
+    margin: 0 auto;
+    height: 80px;
+}
+.head .logo{
+    background: url(../image/navbar-logo.png) no-repeat;
+    float: left;
+    width: 140px;
+    height: 33px;
+    margin-top: 40px;
+    /* background-size: 72px;*/
+}
+.head .welcome {
+    margin-top: 30px;
+    float: left;
+}
+.main {
+    width: 100%;
+    height: 400px;
+    background-color: #5981d8;
+    /*background-image: url(../image/loginbackground.jpg);*/
+    background-size: 100%;
+}
+.main .main-inner{
+    position: relative;
+    width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+
+}
+.main .main-left{
+    position: absolute;
+    top:65px;
+    left: 38px;
+    width: 407px;
+    height: 271px;
+    background-image: url(../image/handwithcomputer.png);
+    background-size: 100%;
+}
+.main .login{
+    width: 345px;
+    height: 370px;
+    float: right;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius:8px;
+}
+.main .login-head{
+    height: 55px;
+    border-bottom: 1px solid #D0D0D0;
+    /* display: -webkit-box; */
+    margin: 0px;
+    line-height: 55px;
+    text-align: center;
+}
+.main .login-head span{
+    font-size: 20px;
+    font-weight: 600;
+    color: #ba383c;
+}
+.main .login-main{
+    height: 260px;
+    border-bottom: 1px solid #D0D0D0;
+}
+.main .login-main-row{
+    position: relative;
+    padding: 0px 20px;
+    margin-top: 20px;
+    height: 36px;
+    /*width: 100%;*/
+}
+.main .login-main-row-left{
+    width: 25%;
+    height: 36px;
+    float: left;
+    text-align: center;
+    background-color: #D0D0D0;
+    border: 1px solid #D0D0D0;
+}
+.main .login-main-row-left-span{
+    font-size: 14px;
+    line-height: 34px;
+}
+.main .login-main-row-right{
+    width: 75%;
+    float: right;
+    border: 1px solid #D0D0D0;
+}
+.main .login-main-input{
+    width: 100%;
+    height: 34px;
+    background-color: #ffffff;
+    border:1px #ccc solid;
+    outline:none;
+}
+.main .login-main-input-code{
+    width: 40%;
+    float: left;
+}
+.login-main-row .captchaImage{
+    width: 35%;
+    float: left;
+    padding-left: 5%;
+    cursor: pointer;
+}
+.main .login-main-row-loginButton{
+    margin-top: 30px;
+}
+.main .loginButton-div{
+    padding: 0px 20px;
+    width: 100%;
+}
+.main .loginButton{
+    color: #fff;
+    background-color: #d9534f;
+    width: 100%;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+.foot {
+    width: 100%;
+    height: 50px;
+}
+.foot .foot-inner{
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 20px;
+}
+.foot-inner p {
+    font-size: 15px;
+}
+.foot-inner a{
+    color: #333333;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none !important;
+}
+.foot-inner img {
+    vertical-align: middle;
+    width:30px;
+    height:30px;
+    cursor:pointer;
+}
+.foot-inner span {
+    color: #333333;
+    outline: none !important;
+}
+
+.main input.login-main-error{
+    border:solid 1px red;
+}
+
+.main label.login-main-error{
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-family: "Microsoft YaHei", "SimSun";
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    width: 100%;
+    height: 20px;
+    color: red;
+}
